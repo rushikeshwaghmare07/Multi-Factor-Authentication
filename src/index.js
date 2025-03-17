@@ -5,6 +5,7 @@ import session from "express-session";
 import passport from "passport";
 
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 const PORT = process.env.PORT || 8001;
@@ -30,6 +31,9 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Routes
+app.use("/api/auth", authRoutes);
 
 connectDB()
   .then(() => {
