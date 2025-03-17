@@ -4,6 +4,8 @@ import cors from "cors";
 import session from "express-session";
 import passport from "passport";
 
+import connectDB from "./config/db.js";
+
 const app = express();
 const PORT = process.env.PORT || 8001;
 
@@ -29,6 +31,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("Error connecting to database", error);
+  });
